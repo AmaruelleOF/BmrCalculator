@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BmrCalculator</string>
+    <string name="next">Следующий</string>
+    <string name="previous">Предыдущий</string>
+    <string name="desc">Привет! Это простое приложение для подсчета БМП по весу и росту.</string>
+    <string name="title">БМР Калькулятор</string>
+    <string name="gender_label">Выберите пол:</string>
+    <string name="female">Женщина</string>
+    <string name="enter_weight">Введите вес:</string>
+    <string name="weight_hint">Вес (кг)</string>
+    <string name="enter_height">Введите рост:</string>
+    <string name="height_hint">Рост (см)</string>
+    <string name="enter_age">Введите возраст:</string>
+    <string name="age_hint">Возраст (года)</string>
+    <string name="calculate">Посчитать БМР</string>
+    <string name="activities">Активности</string>
+    <string name="male">Мужчина</string>
+</resources>
