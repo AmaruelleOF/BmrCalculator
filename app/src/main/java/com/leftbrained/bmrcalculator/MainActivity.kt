@@ -2,6 +2,7 @@ package com.leftbrained.bmrcalculator
 
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -10,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
@@ -20,6 +22,7 @@ import com.leftbrained.bmrcalculator.databinding.ActivityMainBinding
 import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
+    private var globalBMR: Double = 0.0
 
     private lateinit var binding: ActivityMainBinding
 
@@ -31,15 +34,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun calculate(view: View) {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.marathon_info -> {
+                showMarathonInfo()
+                true
+            }
+            R.id.log_bmr -> {
+                Log.d("BMR_LOG", "Logged BMR: $globalBMR")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun calculate(view: View): Double {
         val weight = findViewById<TextInputEditText>(R.id.weight)
         val height = findViewById<TextInputEditText>(R.id.height)
         val age = findViewById<TextInputEditText>(R.id.age)
-        val gender = findViewById<RadioGroup>(R.id.radioGroup);
-        val checked_gender = gender.checkedRadioButtonId;
-        var bmr = 0.0;
+        val gender = findViewById<RadioGroup>(R.id.radioGroup)
+        val checked_gender = gender.checkedRadioButtonId
+        var bmr = 0.0
 
-        if (weight.text.toString() == "" || height.text.toString() == "" || age.text.toString() == "" || checked_gender.equals(null)) return
+        if (weight.text.toString() == "" || height.text.toString() == "" || age.text.toString() == "" || checked_gender.equals(null)) return 0.0
 
         try {
             if (checked_gender == R.id.maleRadio) bmr = 660.0 + (13.7 * weight.text.toString().toDouble()) +
@@ -48,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     (1.8 * height.text.toString().toDouble()) - (4.7 * age.text.toString().toDouble())
         } catch (e: Exception) {
             var exc = Toast.makeText(this, "ERROR: Incorrect format", Toast.LENGTH_LONG).show()
-            return;
+            return 0.0
         }
 
         val activities = mapOf<Double, String>(
@@ -70,6 +93,8 @@ class MainActivity : AppCompatActivity() {
                         "${activitiesKeys[3]}: ${activities[round(bmr * 1.55)]}\n" +
                         "${activitiesKeys[4]}: ${activities[round(bmr * 1.725)]}\n" +
                         "${activitiesKeys[5]}: ${activities[round(bmr * 1.9)]}")).setPositiveButton("OK") { dialog, which -> }.show()
+        globalBMR = bmr
+        return bmr
     }
 
     fun activitiesInfo(view: View) {
@@ -80,5 +105,31 @@ class MainActivity : AppCompatActivity() {
                     "High: This level of activity is characterized by intense physical activity, such as competitive sports or heavy lifting. Examples of this level of activity include playing a contact sport, weightlifting, or doing a high-intensity workout.\n\n" +
                     "Extreme: This level of activity is characterized by extreme physical exertion, such as marathon running or mountaineering. Examples of this level of activity include running a marathon, climbing a mountain, or doing an extreme endurance event."
         ).setPositiveButton("OK") { dialog, which -> }.show()
+    }
+
+    private fun showMarathonInfo() {
+        MaterialAlertDialogBuilder(this).setTitle("Информация о марафоне").setMessage(
+            "О Marathon Skills 2016\n" +
+                    "\n" +
+                    "Marathon Skills - фестиваль бега, проводимый каждый год в разных частях мира. Может быть три зачета: Полный Марафон, Полумарафон и  забег для новичков - таким образом фестиваль подходит всем.\n" +
+                    "\n" +
+                    "В прошлых годах марафон был проведен в Осаке, Япония (2014); Лейпциг, Германия (2013); Ханой, Вьетнам (2012) и Йорк, Англия (2011).\n" +
+                    "\n" +
+                    "В этом году, Marathon Skills очень зрелищно, продет в  Сан-Паоло, Бразилия, он должен быть самым большим фестивалем бега. Это финансовый центр Бразилии и самый большой город в Южной Америке.Сан-Пауло увидят тысячи бегунов, которые будут бежать мимо небоскребов, зеленые парки и великолепная архитектура.\n" +
+                    "\n" +
+                    "Этот фестиваль привлек рекордное количество бегунов со всего мира.  особое внимание будет обращено на участников из Кении и Ямайки, поскольку мы надеемся увидеть победителя 2014 года. (Эфиоп закончил гонку за 45 минут 4 секунды.)\n" +
+                    "\n" +
+                    "Атмосфера праздника обещает развлечения для всех зрителей.\n" +
+                    "\n" +
+                    "События:\n" +
+                    "\n" +
+                    "- Программа \"Самба\" Полный Марафон начнется в Руа-Ду-Американо в 6 утра.\n" +
+                    "\n" +
+                    "- Программа \"Джонго\" Полумарафон начнет в 7 утра Бегуны будут стартовать от недалеко от пересечения улицы Руа Ciniciata и Авенида.\n" +
+                    "\n" +
+                    "- Программа \"Капоэйра\" в 5 км забег для новичков начнется в 15 часов Наши новички побегут от Мемориала Унинове.\n" +
+                    "\n" +
+                    "Спасибо всем волонтерам, которые будут помогать нам проводить марафон!"
+        ).show()
     }
 }

@@ -16,4 +16,6 @@
     <string name="calculate">Посчитать БМР</string>
     <string name="activities">Активности</string>
     <string name="male">Мужчина</string>
+    <string name="marathon_info">Информация о марафоне</string>
+    <string name="log_bmr">Внести в лог значение БМР</string>
 </resources>

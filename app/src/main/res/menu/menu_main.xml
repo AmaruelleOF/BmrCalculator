@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.leftbrained.bmrcalculator.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/marathon_info"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/marathon_info"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/log_bmr"
+        android:orderInCategory="100"
+        android:title="@string/log_bmr"
         app:showAsAction="never" />
 </menu>

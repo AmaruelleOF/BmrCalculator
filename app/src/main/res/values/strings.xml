@@ -56,4 +56,6 @@
     <string name="calculate">Calculate BMR</string>
     <string name="activities">Activities</string>
     <string name="male">Male</string>
+    <string name="marathon_info">Marathon Info</string>
+    <string name="log_bmr">Log BMR value</string>
 </resources>
