@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,6 +24,7 @@ import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
     private var globalBMR: Double = 0.0
+    private var globalSex: Int = 0;
 
     private lateinit var binding: ActivityMainBinding
 
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.log_bmr -> {
                 Log.d("BMR_LOG", "Logged BMR: $globalBMR")
+                Log.d("SEX_LOG", "Logged SEX: ${binding.root.
+                findViewById<RadioButton>(globalSex).text}")
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -94,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                         "${activitiesKeys[4]}: ${activities[round(bmr * 1.725)]}\n" +
                         "${activitiesKeys[5]}: ${activities[round(bmr * 1.9)]}")).setPositiveButton("OK") { dialog, which -> }.show()
         globalBMR = bmr
+        globalSex = checked_gender;
         return bmr
     }
 
